@@ -5,3 +5,15 @@ Commands used to navigate through the Linux filesystem.
 ### syntax
 ```bash
 pwd
+```
+## cd
+`cd` changes the current working directory.
+### syntax
+```bash
+cd /
+cd /bin
+cd /usr/bin
+cd ..
+cd ~
+cd
+```
