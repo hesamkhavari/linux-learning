@@ -195,3 +195,46 @@ grep "error" logfile
 Think:
  Where is this text?
 ## 19. Combining find and grep
+### The commands can be combined to search for specific text inside files.
+For example:
+```bash
+find . -name "*.txt"
+```
+first finds `.txt` files.
+
+The output can then be passed to another command using a pipe or other command-composition techniques.
+
+More advanced combinations will be covered later.
+## 20. Important Notes
+- `find` searches the filesystem hierarchy.
+- `grep` searches text.
+- `find .` starts searching from the current directory.
+- `find /` starts searching from the root directory.
+- `-type f` means regular file.
+- `-type d` means directory.
+- `-name` searches filenames.
+- `^` represents the begining of a line.
+- `$` represents the end of a line.
+- `.` represents one character in a basic regular expression.
+- Searching from `/` can produce a large amount of output.
+- Some directories may require appropriate permissions to access.
+
+## 21. Practical Troubleshooting Examples
+### Find a configuration file:
+```bash
+find /etc -name "*.conf"
+```
+Search for a specific configuration value:
+```bash
+grep "value" /path/to/config
+```
+### Find log files:
+```bash
+find /var/log -type f
+```
+Search a log file for errors:
+```bash
+grep "error" /var/log/example.log
+```
+
+### These techniques are fundamental for Linux system administration and troubleshooting.
