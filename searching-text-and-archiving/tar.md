@@ -115,5 +115,5 @@ tar -xjf backup.tar.bz2
 ## Important Notes
 - `tar` is primarily an archiving tool.
 - `gzip` and `bzip2` provide compression.
-`.tar.gz` means a tar archive compressed with gzip.
-`.tar.bz2` means a tar archive compressed with bzip2.
+- `.tar.gz` means a tar archive compressed with gzip.
+- `.tar.bz2` means a tar archive compressed with bzip2.
