@@ -177,6 +177,7 @@ b
 ```
 ### Therefore it can match:
 ```Plain text
+a
 ab
 abb
 abbb
