@@ -176,6 +176,10 @@ Therefore the complete pattern represents exactly three characters.
 |[abc]|One character from a, b or c|
 |[a-z]|One character from a through z|
 
+Regular expressions will be covered in more detail in:
+```Plain text
+regular-expressions.md
+```
 ## 18. find vs grep
 These commands solve different problems:
 
