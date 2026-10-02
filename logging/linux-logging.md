@@ -38,3 +38,10 @@ dmesg | tail
 `dmesg` is useful for investigating kernel and hardware-related events.
 
 ## CUPS Logs
+CUPS logs may be stored under:
+```bash
+cd /var/log/cups/
+ls -al
+```
+## Important Note
+Log locations and filenames vary between distributions and configurations. Modern Linux systems may also use `systemd-journald` and `journalctl` for centralized logging.
