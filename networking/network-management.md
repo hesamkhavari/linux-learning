@@ -170,12 +170,10 @@ ip neigh
 ```bash
 host google.com
 ```
-The `host` command is a simple utility used to perform DNS lookups.
 ### dig
 ```bash
 dig google.com
 ```
-`dig` (Domain Information Groper) is the industry-standard, powerful command-line tool for performing detailed DNS lookups and advanced network troubleshooting.
 Query a specific record:
 ```bash
 dig A google.com
