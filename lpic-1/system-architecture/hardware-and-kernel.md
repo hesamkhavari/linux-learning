@@ -106,6 +106,23 @@ sudo sysctl -p
 ```
 > Be careful when changing kernel parameters. Some values can affect system stability, networking or resource limits.
 
+---
+## Persistent Kernel Configuration with `sysctl`
+To apply persistent kernel parameter changes on Linux, use a custom configuration file in `/etc/sysctl.d/`.
+1. Create and edit a custom configuration file
+```bash
+sudo nano /etc/sysctl.d/1-custom.conf
+```
+2. Add your desired kernel configuration parameters
+```Plain text
+net.ipv4.ip_forward = 1
+```
+3. Reload all sysctl configurations to apply changes immediately
+```bash
+sudo sysctl --system
+```
+---
+
 ## Device Files: `/dev`
 Linux exposes device nodes under:
 ```Plain text
