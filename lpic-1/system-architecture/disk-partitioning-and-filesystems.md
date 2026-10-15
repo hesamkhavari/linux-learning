@@ -20,8 +20,10 @@ Swap|Virtual memory space; not a directory
 
 ## 3. Storage Design
 - **Simple desktop** : One `/` filesystem, required boot partition(s), and optional `swap`.
-- **Network desktop** : One `/` filesystem, required boot partition(s), and optional `swap`.files to be accessed from multiple systems.
-- **Server** : Separate filesystems for `/var`, `/home`, or other paths may help with capacity management, isolation and maintenance. Design depends on workload and requirements.
+
+- **Networked desktop** : `/home` may use a network filesystem such as NFS to make user files accessible across multiple systems.
+
+- **Server**: Separate filesystems for `/var`, `/home`, or other paths may help with capacity management, isolation and maintenance. Design depends on workload and requirements.
 
 ## 4. RAID Basics
 - **Hardware RAID** : Managed by a dedicated controller.
