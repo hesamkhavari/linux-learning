@@ -198,8 +198,62 @@ rpm -K package.rpm
 
 - `rpm -V` checks package files against recorded attributes; no output usually means no discrepancies were found.
 
-rpm -K checks package digests and signatures where applicable. A successful digest check alone does not establish that the package publisher is trusted.
+- `rpm -K` checks package digests and signatures where applicable. A successful digest check alone does not establish that the package publisher is trusted.
 
-rpm -Vv adds verbose verification output.
+- `rpm -Vv` adds verbose verification output.
 
-The correct command is rpm -q, not rom -q.
+- The correct command is `rpm -q`, not rom -q.
+
+## 7. Dependency Handling and Safety
+Install a local RPM and resolve dependencies through repositories:
+```bash
+sudo dnf install ./package.rpm
+```
+Inspect DNF transaction history:
+```bash
+dnf history
+```
+Show installed-package database consistency problems:
+```bash
+sudo dnf check
+```
+Remove unneeded dependencies when appropriate:
+```bash
+sudo dnf autoremove
+```
+
+- Prefer `DNF` over `rpm -i` when installing packages because `DNF` can resolve dependencies using configured repositories.
+
+- Avoid `rpm --nodeps` except in carefully controlled troubleshooting. Bypassing dependency checks can leave applications broken.
+
+- `rpm -i *.rpm` does not guarantee that dependencies or installation order will be handled correctly.
+
+- Review the proposed transaction before confirming package removals or major updates.
+
+- `dnf history` can help investigate changes. Undo and rollback capabilities depend on the package manager version and the transaction.
+
+## 8. YUM Compatibility
+Older systems may use commands such as:
+```bash
+yum install firefox
+yum remove firefox
+yum search openssh
+yum upgrade
+yumdownloader --resolve openssh-clients
+```
+> On modern RHEL-compatible systems, many `yum` commands work through `DNF` compatibility. For new notes and routine administration, use the `DNF` equivalents unless the target system specifically requires `YUM`.
+
+## 9. `DNF5` Notes
+### DNF5 is not available on every RPM-based distribution. Check the installed implementation first:
+```bash
+dnf --version
+dnf5 --version
+dnf5 --help
+dnf5 install --help
+```
+When working on a DNF5 system, check the local manual pages because plugins and supported subcommands may differ:
+```bash
+man dnf5
+dnf5 download --help
+```
+Use the package manager provided by the target distribution rather than assuming dnf5 is installed everywhere.
