@@ -81,3 +81,127 @@ ID|Meaning
 
 **Note** : MBR type IDs are metadata; they do not format a partition. For example, selecting Linux swap does not replace the need to run mkswap.
 
+## 5. Create Filesystems
+
+General syntax :
+```bash
+sudo mkfs -t TYPE /dev/PARTITION
+```
+Examples for a dedicated test disk :
+```bash
+sudo mkfs.ext2 /dev/sdb5
+sudo mkfs.ext3 /dev/sdb6
+sudo mkfs.ext4 /dev/sdb7
+sudo mkfs.xfs /dev/sdb1
+sudo mkfs.vfat -F 32 /dev/sdb3
+```
+For `ReiserFS`, if the required utilities are installed:
+```bash
+sudo mkfs.reiserfs /dev/sdbX
+```
+For `NTFS`, if the appropriate utility is installed:
+```bash
+sudo mkfs.ntfs /dev/sdbX
+```
+Replace `/dev/sdbX` with the intended partition. 
+These commands can overwrite existing filesystem structures and make existing data inaccessible. Run them only on the correct test partition.
+
+### Filesystem Overview
+
+- `ext2` : An older Linux filesystem **without journaling**.
+
+- `ext3` : An older ext filesystem with **journaling**.
+
+- `ext4` : A widely used general-purpose Linux filesystem.
+
+- `XFS` : A mature filesystem commonly used for **large files** and **high-throughput** workloads.
+
+- `VFAT/FAT32` : Useful when broad **compatibility** with other operating systems and devices is required.
+
+- `NTFS` : The primary **Windows filesystem**; Linux creation and management depend on installed tools.
+
+- `ReiserFS` : A **legacy** filesystem and generally not a first choice for new deployments.
+
+## 6. Create and Enable Swap
+The following example assumes `/dev/sdb2` is a dedicated test partition:
+```bash
+sudo mkswap /dev/sdb2
+sudo swapon /dev/sdb2
+swapon --show
+cat /proc/swaps
+```
+
+- `mkswap` : Initializes the selected area for swap use.
+
+- `swapon` : Enables swap.
+
+- `swapon --show` : Lists active swap areas.
+
+- `/proc/swaps` : Provides information about currently enabled swap areas.
+
+To disable a swap partition :
+```bash
+sudo swapoff /dev/sdb2
+```
+> Ensure the system has sufficient available memory before disabling swap that is in use.
+
+### Enable Swap at Boot
+Find the swap UUID :
+```bash
+sudo blkid /dev/sdb2
+```
+Add an entry to `/etc/fstab`, replacing the placeholder with the actual UUID :
+```bash
+UUID=<swap-uuid> none swap sw 0 0
+```
+> Check for duplicate entries before editing the file. Validate the configuration before rebooting.
+
+## 7. Mount and Inspect a Filesystem
+Mount a test filesystem :
+```bash
+sudo mkdir -p /mnt/test
+sudo mount /dev/sdb7 /mnt/test
+findmnt /mnt/test
+df -hT /mnt/test
+sudo umount /mnt/test
+```
+
+- `mount` : Attaches a filesystem to a directory.
+
+- `findmnt` : Shows mounted filesystems and mount options.
+
+- `df -hT` : Displays filesystem type and disk usage in human-readable units.
+
+- `umount` : Detaches a mounted filesystem.
+
+> Use the correct device and mount point. A filesystem must not be unmounted while it is still needed by active processes.
+
+## 8. Useful Operational Notes
+
+- Formatting and partition-table changes can cause data loss. `Back up` important data first.
+
+- Verify device names with `lsblk` immediately before destructive operations.
+
+- `sudo partprobe /dev/sdb` can ask the kernel to reread a disk's partition table. It may not work if the disk or partitions are busy.
+
+- Use UUIDs in `/etc/fstab` when appropriate, rather than relying on potentially changing device names.
+
+- `mkfs` utilities for filesystems such as `XFS`, `NTFS`, and `ReiserFS` may need to be installed separately.
+
+- For modern Linux systems, `ext4` and `XFS` are common filesystem choices; select based on workload and operational requirements.
+
+## Quick Reference
+
+Task|Command
+|---|---|
+List block devices|lsblk -f
+List partition tables|sudo fdisk -l
+Edit a partition table|sudo fdisk /dev/sdb
+Create an ext4 filesystem|sudo mkfs.ext4 /dev/sdXN
+Initialize swap|sudo mkswap /dev/sdXN
+Enable swap|sudo swapon /dev/sdXN
+Show active swap|swapon --show
+Show filesystem UUIDs|sudo blkid
+Check filesystem usage|df -hT
+Inspect mount points|findmnt
+
