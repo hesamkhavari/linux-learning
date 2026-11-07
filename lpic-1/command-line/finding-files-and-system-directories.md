@@ -23,6 +23,7 @@ Directory|Purpose
 `/mnt`|Temporary manual mount points
 `/media`|Removable media mount points
 `/srv`|Data provided by system services
+`/run`Runtime system data
 
 ### Important Notes :
 
@@ -99,7 +100,83 @@ find /home -type f -name "*.log" -exec ls -l {} \;
 
 - `\;` terminates the command.
 
+## 3. Finding Files with locate
+`locate` searches a previously generated database of file paths.
 
-/run
+```bash
+# Search for a filename
+locate hesam
 
-Runtime system data
+# Case-insensitive search
+locate -i hesam
+
+# Search for an exact basename
+locate -b '\hesam.txt'
+
+# Update the database
+sudo updatedb
+```
+
+### Important Notes :
+- `locate` is generally faster than `find`.
+
+- Results depend on database freshness.
+
+- Newly created files may not appear until the database is updated.
+
+- The database configuration is commonly stored in `/etc/updatedb.conf`.
+
+- locate supports patterns and is not limited to exact filename matching.
+
+## 4. Finding Commands and System Information
+
+Command|Purpose
+|---|---|
+`which` COMMAND|Locate an executable in PATH
+`whereis` COMMAND|Locate binary, source and manual files
+`whatis` COMMAND|Display a short manual description
+`type` COMMAND|Identify command type
+`command -v` COMMAND|Identify how the shell resolves a command
+`man` hier|Display filesystem hierarchy documentation
+
+### Examples
+```bash
+which ls
+whereis ls
+whatis ls
+type ls
+command -v ls
+```
+
+Important: `type` can identify aliases, shell functions, built-ins and external commands. 
+`command -v` is generally preferable for portable shell scripting.
+
+## 5. Quick Reference
+
+Requirement|Location / Command
+|---|---|
+System configuration|`/etc`
+System logs|`/var/log`
+Mail data|`/var/mail` or `/var/spool/mail`
+Device files|`/dev`
+Process information|`/proc`
+Hardware and kernel device information|`/sys`
+Temporary files|`/tmp`
+User home directories|`/home`
+Root user's home|`/root`
+Boot files|`/boot`
+Manual file search|`find`
+Database-based search|`locate`
+Update locate database|`updatedb`
+
+## 6. Important Notes
+
+- `find` performs a live filesystem search and does not require a database.
+
+- `locate` searches an index and may return outdated results.
+
+- Use `sudo` when permission restrictions prevent access to directories.
+
+- Use `2>/dev/null` to suppress permission error messages.
+
+- Use `find` when you need conditions such as ownership, permissions, size or modification time.
